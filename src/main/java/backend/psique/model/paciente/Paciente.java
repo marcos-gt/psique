@@ -26,4 +26,11 @@ public class Paciente {
     @Embedded
     private Endereco endereco;
 
+    public Paciente(DadosCadastroPaciente dados) {
+        this.cpf = dados.cpf();
+        this.nome = dados.nome();
+        this.telefone = dados.telefone();
+        this.evolucao = dados.evolucao();
+        this.endereco = new Endereco(dados.endereco());
+    }
 }

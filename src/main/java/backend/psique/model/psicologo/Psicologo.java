@@ -25,4 +25,5 @@ public class Psicologo {
         this.crp = dados.crp();
         this.qtde_paciente = dados.qtde_paciente();
     }
+
 }

@@ -22,7 +22,6 @@ public class Paciente {
     private String cpf;
     private String nome;
     private String telefone;
-    private String evolucao;
     @Embedded
     private Endereco endereco;
 
@@ -30,7 +29,14 @@ public class Paciente {
         this.cpf = dados.cpf();
         this.nome = dados.nome();
         this.telefone = dados.telefone();
-        this.evolucao = dados.evolucao();
         this.endereco = new Endereco(dados.endereco());
+    }
+
+    public Paciente(Paciente paciente) {
+        this.cpf = paciente.getCpf();
+    }
+
+    public Paciente(String cpf) {
+        this.cpf = cpf;
     }
 }

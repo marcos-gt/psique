@@ -12,7 +12,6 @@ public record DadosCadastroPaciente(
         String nome,
         @NotBlank
         String telefone,
-        String evolucao,
         @NotNull @Valid
         Endereco endereco) {
 }

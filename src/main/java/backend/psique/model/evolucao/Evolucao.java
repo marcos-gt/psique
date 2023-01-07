@@ -6,9 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Date;
 
 @Entity
@@ -19,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class Evolucao {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date data_evolucao;
     private String descricao;
@@ -29,6 +26,6 @@ public class Evolucao {
     public Evolucao(DadosCadastroEvolucao dados) {
         this.data_evolucao = dados.data_evolucao();
         this.descricao = dados.descricao();
-        this.paciente = dados.paciente();
+        this.paciente = new Paciente(dados.paciente());
     }
 }

@@ -3,6 +3,7 @@ package backend.psique.model.evolucao;
 import backend.psique.model.Mensagem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,6 +12,8 @@ public class ServicoEvolucao {
     private Mensagem mensagem;
     @Autowired
     private EvolucaoRepository repository;
+    @Autowired
+    private PasswordEncoder encoder;
 
     public ResponseEntity<?>cadastrar(Evolucao obj){
         if(obj.getDescricao() == null) {

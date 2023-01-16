@@ -6,14 +6,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ServicoEvolucao {
     @Autowired
     private Mensagem mensagem;
     @Autowired
     private EvolucaoRepository repository;
-    @Autowired
-    private PasswordEncoder encoder;
+    //@Autowired
+    //private PasswordEncoder encoder;
 
     public ResponseEntity<?>cadastrar(Evolucao obj){
         if(obj.getDescricao() == null) {
@@ -26,5 +28,13 @@ public class ServicoEvolucao {
             repository.save(obj);
             mensagem.setMensagem("Evolução cadastrada com sucesso");
             return ResponseEntity.ok(mensagem);
+    }
+
+    public List<Evolucao> listarTodos() {
+        return repository.findAll();
+    }
+
+    public Evolucao listarUnico(String cpf) {
+        return repository.findByPaciente_Cpf(cpf);
     }
 }

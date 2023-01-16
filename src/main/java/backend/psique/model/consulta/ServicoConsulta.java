@@ -1,11 +1,13 @@
 package backend.psique.model.consulta;
 
+import backend.psique.model.Mensagem;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import backend.psique.model.Mensagem;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -27,4 +29,10 @@ public class ServicoConsulta {
             mensagem.setMensagem("Consulta cadastrada com sucesso");
             return new ResponseEntity<>(mensagem,HttpStatus.CREATED);
     }
+
+    public List<Consulta> listarAll() {
+        return repository.findAll();
+    }
+
+
 }

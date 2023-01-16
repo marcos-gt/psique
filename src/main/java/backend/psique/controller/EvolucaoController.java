@@ -5,10 +5,14 @@ import backend.psique.model.evolucao.Evolucao;
 import backend.psique.model.evolucao.EvolucaoRepository;
 import backend.psique.model.evolucao.ServicoEvolucao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("evolucao")
+@RequestMapping
 public class EvolucaoController {
     @Autowired
    private EvolucaoRepository repository;
@@ -23,5 +27,15 @@ public class EvolucaoController {
         public String cadastrar(@PathVariable String cpf){
         return "Evolução cadastrada com sucesso "+cpf;
         }
-
+        @GetMapping("/evolucoesListar")
+    public ModelAndView listar(){
+            ModelAndView mv = new ModelAndView("evolucoesListar");
+            List<Evolucao> listarTodos = servicoEvolucao.listarTodos();
+            mv.addObject("evolucoes", listarTodos);
+        return mv;
+    }
+    @GetMapping("/evolucoesListar/{cpf}")
+    public ResponseEntity<?> listar(@PathVariable String cpf){
+        return ResponseEntity.ok(servicoEvolucao.listarUnico(cpf));
+    }
 }

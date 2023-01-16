@@ -1,12 +1,9 @@
 package backend.psique.security;
-
-import backend.psique.data.DetalheUsuarioData;
+/*
 import backend.psique.model.usuario.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +12,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
@@ -39,8 +35,8 @@ public class JWTAutenticarFilter extends UsernamePasswordAuthenticationFilter {
 
         return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        dadosLoginUsuario.getEmail(),
-                        dadosLoginUsuario.getSenha(),
+                        dadosLoginUsuario.getUsername(),
+                        dadosLoginUsuario.getPassword(),
                         new ArrayList<>()
                 ));
         } catch (IOException e) {
@@ -54,7 +50,7 @@ public class JWTAutenticarFilter extends UsernamePasswordAuthenticationFilter {
                                             FilterChain chain,
                                             Authentication authResult)
             throws IOException, ServletException {
-        DetalheUsuarioData usuarioData = (DetalheUsuarioData) authResult.getPrincipal();
+        Usuario usuarioData = (Usuario) authResult.getPrincipal();
         String token = JWT.create()
                 .withSubject(usuarioData.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_EXPERACAO))
@@ -63,3 +59,4 @@ public class JWTAutenticarFilter extends UsernamePasswordAuthenticationFilter {
         response.getWriter().flush();
     }
 }
+*/

@@ -2,10 +2,13 @@ package backend.psique.model.paciente;
 
 import backend.psique.model.Mensagem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServicoPaciente {
@@ -13,10 +16,9 @@ public class ServicoPaciente {
     private Mensagem mensagem;
     @Autowired
     private PacienteRepository repository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
     public ResponseEntity<?>cadastrar(Paciente obj){
-        if(repository.CountByCpf(obj.getCpf()) > 1 ) {
+        Optional<Paciente> paciente = repository.findByCpf(obj.getCpf());
+        if(paciente.isPresent() ) {
             mensagem.setMensagem("CPF já cadastrado");
             return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
         }else {
@@ -24,5 +26,10 @@ public class ServicoPaciente {
             mensagem.setMensagem("Paciente cadastrado com sucesso");
             return new ResponseEntity<>(mensagem, HttpStatus.CREATED);
         }
+    }
+
+    public List<DadosListagemPaciente> ListarTodos() {
+        Iterable<Paciente> pacientesIterable = repository.findAll();
+        return Streamable.of(pacientesIterable).map(DadosListagemPaciente::new).toList();
     }
 }

@@ -1,5 +1,5 @@
 package backend.psique.security;
-
+/*
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import jakarta.servlet.FilterChain;
@@ -44,3 +44,4 @@ public class JWTValidarFilter extends BasicAuthenticationFilter {
         return new UsernamePasswordAuthenticationToken(usuario, null,new ArrayList<>());
     }
 }
+*/

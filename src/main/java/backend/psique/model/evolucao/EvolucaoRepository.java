@@ -4,4 +4,5 @@ import org.springframework.data.jpa.repository.support.JpaRepositoryImplementati
 
 public interface EvolucaoRepository extends JpaRepositoryImplementation<Evolucao, Long> {
 
+    Evolucao findByPaciente_Cpf(String cpf);
 }

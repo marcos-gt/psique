@@ -4,12 +4,18 @@ import backend.psique.model.consulta.Consulta;
 import backend.psique.model.consulta.ConsultaRepository;
 import backend.psique.model.consulta.DadosConsulta;
 import backend.psique.model.consulta.ServicoConsulta;
+import backend.psique.model.psicologo.Psicologo;
+import backend.psique.model.psicologo.PsicologoServico;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.servlet.ModelAndView;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -19,17 +25,36 @@ public class ConsultaController {
     private ConsultaRepository repository;
     @Autowired
     private ServicoConsulta servicoConsulta;
+    @Autowired
+    private PsicologoServico servicoPsicologo;
     @PostMapping("cadastrarconsulta")
     @Transactional
     public ResponseEntity<?> cadastrar(@RequestBody @Valid DadosConsulta dados){
         return servicoConsulta.cadastrar(new Consulta(dados));
     }
-    @GetMapping("/listar")
-    public List<Consulta> listar(){
-        return repository.findAll();
+    @GetMapping("/consultasListar")
+    public ModelAndView listar(){
+        ModelAndView mv = new ModelAndView("consultasListar");
+        String pattern = "dd/MM/yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        List<Consulta> consultas = repository.findAll();
+        List<String> datas = new ArrayList<>();
+        for(Consulta c : consultas){
+            String date = simpleDateFormat.format(c.getData_consulta());
+            System.out.println(date);
+            datas.add(date);
+        }
+        mv.addObject("consultas",consultas);
+        mv.addObject("datas",datas);
+        return mv;
     }
-
-
+    @GetMapping("/cadConsulta")
+    public ModelAndView cadastro(){
+        ModelAndView mv = new ModelAndView("cadConsulta");
+        List<Psicologo> psicologos = servicoPsicologo.listarTodos();
+        mv.addObject("psicologos", psicologos);
+        return mv;
+    }
     @GetMapping("/listar/{cpf}")
     public List<Consulta> ListarPorCpf(@PathVariable String cpf){
         return repository.findByPaciente_Cpf(cpf);

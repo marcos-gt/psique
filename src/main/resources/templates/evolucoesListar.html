@@ -1,0 +1,18 @@
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Paciente</th>
+            <th scope="col">Data</th>
+            <th scope="col">Descrição</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="evolucao:${evolucoes}">
+            <th scope="row" th:text="${evolucao.paciente.nome}" ></th>
+            <td th:text="${#dates.format(evolucao.data_evolucao,'dd/MM/yyyy')}"></td>
+            <td th:text="${evolucao.descricao}"></td>
+        </tr>
+    </table>
+</div>

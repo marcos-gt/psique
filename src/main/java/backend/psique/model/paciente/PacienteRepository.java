@@ -1,15 +1,14 @@
 package backend.psique.model.paciente;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import java.util.Optional;
 
 @EnableJpaRepositories
 public interface PacienteRepository extends JpaRepository<Paciente, String> {
 
 
-    Paciente findByCpf(String cpf);
+    Optional<Paciente> findByCpf(String cpf);
 
-    @Query("SELECT p FROM Paciente p WHERE p.cpf = :cpf")
-    int CountByCpf(String cpf);
 }

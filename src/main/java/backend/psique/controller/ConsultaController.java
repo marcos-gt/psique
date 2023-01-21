@@ -9,13 +9,12 @@ import backend.psique.model.psicologo.PsicologoServico;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -58,5 +57,11 @@ public class ConsultaController {
     @GetMapping("/listar/{cpf}")
     public List<Consulta> ListarPorCpf(@PathVariable String cpf){
         return repository.findByPaciente_Cpf(cpf);
+    }
+    @GetMapping("/listar")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @CrossOrigin(origins = "http://127.0.0.1:5501/")
+    public List<Consulta> Listar(){
+        return servicoConsulta.listarAll();
     }
 }

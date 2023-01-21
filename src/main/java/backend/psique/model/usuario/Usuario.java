@@ -6,15 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
-@Entity
+@Entity(name= "usuario")
 @Table(name = "usuario")
 @Getter
 @Setter
@@ -31,35 +31,29 @@ public class Usuario implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "cpf_psicologo")
     private Psicologo psicologo;
-    @ManyToMany
-    @JoinTable(name = "tb_user_roles",
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "tb_user_roles",
             joinColumns = @JoinColumn(name = "id"),
             inverseJoinColumns = @JoinColumn(name = "roleid"))
-    private List<RoleModel> roles;
-
+    private List<RoleModel> roles = new ArrayList<>();
     public Usuario(DadosCadastroUsuario dados) {
         this.username = dados.username();
         this.password = dados.password();
         this.psicologo = dados.psicologo();
     }
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return (UserDetailsService) new UsuarioServico();
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
+        return roles;
     }
-
     @Override
     public String getPassword() {
-        return this.password;
+        return password;
     }
-
     @Override
-    public String getUsername() {
-        return this.username;
+    public String getUsername(){
+        return username;
     }
 
     @Override

@@ -1,10 +1,8 @@
 package backend.psique.controller;
 
 import backend.psique.model.usuario.DadosCadastroForm;
-import backend.psique.model.usuario.UsuarioRepository;
 import backend.psique.model.usuario.UsuarioServico;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;

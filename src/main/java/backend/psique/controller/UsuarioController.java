@@ -1,12 +1,11 @@
 package backend.psique.controller;
 
 import backend.psique.model.usuario.*;
+//import backend.psique.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +23,10 @@ public class UsuarioController {
     @Autowired
     private UsuarioServico servico;
 
+
+
+    public static String token;
+
     public UsuarioController(UsuarioRepository repository, PasswordEncoder encoder) {
         this.repository = repository;
         this.encoder = encoder;
@@ -36,16 +39,12 @@ public class UsuarioController {
     public ResponseEntity<?> cadastrarUsuario(@RequestBody DadosCadastroUsuario user) {
         return servico.cadastrar(new Usuario(user));
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/usuariosListar")
     public ModelAndView listarUsuarios() {
         ModelAndView mv = new ModelAndView("usuariosListar");
         List<Usuario> usuarios = repository.findAllBy();
         mv.addObject("usuarios", usuarios);
         return mv;
-    }
-    @GetMapping("/loginUser")
-    public ResponseEntity<?> LoginUsuario(@RequestBody Usuario usuario) {
-        System.out.println(usuario);
-        return servico.validarLogin(usuario);
     }
 }

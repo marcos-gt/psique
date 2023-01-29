@@ -2,11 +2,11 @@ package backend.psique.model.evolucao;
 
 import backend.psique.model.Mensagem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class ServicoEvolucao {
@@ -14,8 +14,7 @@ public class ServicoEvolucao {
     private Mensagem mensagem;
     @Autowired
     private EvolucaoRepository repository;
-    //@Autowired
-    //private PasswordEncoder encoder;
+
 
     public ResponseEntity<?>cadastrar(Evolucao obj){
         if(obj.getDescricao() == null) {
@@ -30,11 +29,7 @@ public class ServicoEvolucao {
             return ResponseEntity.ok(mensagem);
     }
 
-    public List<Evolucao> listarTodos() {
-        return repository.findAll();
-    }
-
-    public Evolucao listarUnico(String cpf) {
-        return repository.findByPaciente_Cpf(cpf);
+    public Page<Evolucao> findByCpf(String cpf,Pageable pageable) {
+        return repository.findByPaciente_Cpf(cpf,pageable);
     }
 }

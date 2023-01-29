@@ -8,6 +8,8 @@ import backend.psique.model.psicologo.Psicologo;
 import backend.psique.model.psicologo.PsicologoServico;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,7 @@ public class ConsultaController {
     private PsicologoServico servicoPsicologo;
     @PostMapping("cadastrarconsulta")
     @Transactional
+    @CrossOrigin(origins = "http://127.0.0.1:5501/")
     public ResponseEntity<?> cadastrar(@RequestBody @Valid DadosConsulta dados){
         return servicoConsulta.cadastrar(new Consulta(dados));
     }
@@ -58,10 +61,11 @@ public class ConsultaController {
     public List<Consulta> ListarPorCpf(@PathVariable String cpf){
         return repository.findByPaciente_Cpf(cpf);
     }
-    @GetMapping("/listar")
+    @GetMapping("/listarConsulta")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @CrossOrigin(origins = "http://127.0.0.1:5501/")
-    public List<Consulta> Listar(){
-        return servicoConsulta.listarAll();
+    public Page<Consulta> Listar(Pageable paginacao){
+        Page<Consulta> consultas = repository.findAll(paginacao);
+        return consultas;
     }
 }

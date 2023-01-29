@@ -4,14 +4,15 @@ import backend.psique.model.evolucao.DadosCadastroEvolucao;
 import backend.psique.model.evolucao.Evolucao;
 import backend.psique.model.evolucao.EvolucaoRepository;
 import backend.psique.model.evolucao.ServicoEvolucao;
+import backend.psique.model.paciente.Paciente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.awt.print.Pageable;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping
@@ -29,15 +30,17 @@ public class EvolucaoController {
         public String cadastrar(@PathVariable String cpf){
         return "Evolução cadastrada com sucesso "+cpf;
         }
-        @GetMapping("/evolucoesListar")
-    public ModelAndView listar(Pageable pageable) {
-            ModelAndView mv = new ModelAndView("evolucoesListar");
-            Page<Evolucao> listarTodos = (Page<Evolucao>) servicoEvolucao.listarTodos();
-            mv.addObject("evolucoes", listarTodos);
-        return mv;
+    @GetMapping("/evolucoesListar")
+    @CrossOrigin(origins = "http://127.0.0.1:5501/")
+    public Page<Evolucao> visualizar(Pageable paginacao){
+        Page<Evolucao> evolucaos = repository.findAll(paginacao);
+        return evolucaos;
     }
     @GetMapping("/evolucoesListar/{cpf}")
-    public ResponseEntity<?> listar(@PathVariable String cpf){
-        return ResponseEntity.ok(servicoEvolucao.listarUnico(cpf));
+    @CrossOrigin(origins = "http://127.0.0.1:5501/")
+    public Page<Evolucao> listar(@PathVariable String cpf, Pageable pageable){
+        Page<Evolucao> evolucaos = servicoEvolucao.findByCpf(cpf,pageable);
+        return evolucaos;
     }
+
 }

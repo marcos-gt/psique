@@ -3,14 +3,13 @@ package backend.psique.controller;
 import backend.psique.model.usuario.*;
 //import backend.psique.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -35,16 +34,15 @@ public class UsuarioController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/cadUser")
     @Transactional
-
+    @CrossOrigin(origins = "http://127.0.0.1:5501/")
     public ResponseEntity<?> cadastrarUsuario(@RequestBody DadosCadastroUsuario user) {
         return servico.cadastrar(new Usuario(user));
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/usuariosListar")
-    public ModelAndView listarUsuarios() {
-        ModelAndView mv = new ModelAndView("usuariosListar");
-        List<Usuario> usuarios = repository.findAllBy();
-        mv.addObject("usuarios", usuarios);
-        return mv;
+    @CrossOrigin(origins = "http://127.0.0.1:5501/")
+    public Page<Usuario> listarUsuarios(Pageable paginacao) {
+        Page<Usuario> usuarios = servico.findAll(paginacao);
+        return usuarios;
     }
 }

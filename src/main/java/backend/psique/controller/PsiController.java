@@ -1,14 +1,16 @@
 package backend.psique.controller;
 
-import backend.psique.model.psicologo.DadosCadastroPsicologo;
-import backend.psique.model.psicologo.Psicologo;
-import backend.psique.model.psicologo.PsicologoRepository;
-import backend.psique.model.psicologo.PsicologoServico;
+import backend.psique.model.psicologo.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping
@@ -24,9 +26,16 @@ public class PsiController {
         servicoPsicologo.cadastro(new Psicologo(dados));
     }
     @GetMapping("/viewsPsi")
-    public ModelAndView visualizar(){
-        ModelAndView mv = new ModelAndView("viewsPsi");
-        mv.addObject("psicologos", servicoPsicologo.listarTodos());
-        return mv;
+    @CrossOrigin(origins = "http://127.0.0.1:5501/")
+    public Page<Psicologo> visualizar(Pageable paginacao){
+        Page<Psicologo> psicologos = servicoPsicologo.findAll(paginacao);
+        return psicologos;
+    }
+    @GetMapping("/DadosSelectPsicologo")
+    @CrossOrigin(origins = "http://127.0.0.1:5501/")
+    public List<DadosSelectPsicologo> listarAll(){
+        List<Psicologo> psicologos = repository.findAll();
+        List<DadosSelectPsicologo> dados = psicologos.stream().map(DadosSelectPsicologo::new).collect(Collectors.toList());
+        return dados;
     }
 }

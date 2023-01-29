@@ -4,6 +4,8 @@ import backend.psique.model.Mensagem;
 import backend.psique.model.psicologo.Psicologo;
 import backend.psique.model.psicologo.PsicologoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -75,5 +77,9 @@ public class UsuarioServico {
 
     public UserDetails findByUsername(String username) {
     return repository.findByUsername(username);
+    }
+
+    public Page<Usuario> findAll(Pageable paginacao) {
+        return repository.findAll(paginacao);
     }
 }

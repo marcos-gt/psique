@@ -7,8 +7,6 @@ import java.util.Optional;
 
 @EnableJpaRepositories
 public interface PacienteRepository extends JpaRepository<Paciente, String> {
-
-
     Optional<Paciente> findByCpf(String cpf);
 
 }

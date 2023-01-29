@@ -49,13 +49,7 @@ public class WebSecurityConfig{
         return http.build();
 
     }
-    @Bean
-    CorsConfigurationSource corsConfiguration (){
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
-        source.registerCorsConfiguration("/**", corsConfiguration);
-        return source;
-    }
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ServicoPaciente {
@@ -31,5 +32,10 @@ public class ServicoPaciente {
     public List<DadosListagemPaciente> ListarTodos() {
         Iterable<Paciente> pacientesIterable = repository.findAll();
         return Streamable.of(pacientesIterable).map(DadosListagemPaciente::new).toList();
+    }
+
+    public List<Paciente> findAllSelect() {
+        List<Paciente> pacientes = repository.findAll();
+        return pacientes;
     }
 }

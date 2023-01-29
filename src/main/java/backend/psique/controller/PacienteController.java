@@ -6,10 +6,13 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping
@@ -18,8 +21,10 @@ public class PacienteController {
     private PacienteRepository repository;
     @Autowired
     private ServicoPaciente servicoPaciente;
+
     @PostMapping("/cadPaciente")
     @Transactional
+    @CrossOrigin(origins = "http://127.0.0.1:5501/")
     @PermitAll
     public ModelAndView cadastrar(@RequestBody @Valid DadosCadastroPaciente dados){
         ModelAndView mv = new ModelAndView("cadPaciente");
@@ -27,11 +32,18 @@ public class PacienteController {
         return mv;
     }
 
-    @GetMapping("/cadPaciente")
-    public ModelAndView visualizar(Pageable paginacao){
-        ModelAndView mv = new ModelAndView("cadPaciente");
+    @GetMapping("/listar")
+    @CrossOrigin(origins = "http://127.0.0.1:5501/")
+    public Page<Paciente> visualizar(Pageable paginacao){
         Page<Paciente> pacientes = repository.findAll(paginacao);
-        mv.addObject("pacientes", pacientes);
-        return mv;
+        return pacientes;
     }
+    @GetMapping("/listarAll")
+    @CrossOrigin(origins = "http://127.0.0.1:5501/")
+    public List<DadosSelect> listarAll(){
+        List<Paciente> pacientes = repository.findAll();
+        List<DadosSelect> dados = pacientes.stream().map(DadosSelect::new).collect(Collectors.toList());
+        return dados;
+    }
+
 }

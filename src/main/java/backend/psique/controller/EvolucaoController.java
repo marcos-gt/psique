@@ -36,6 +36,8 @@ public class EvolucaoController {
         Page<Evolucao> evolucaos = repository.findAll(paginacao);
         return evolucaos;
     }
+
+
     @GetMapping("/evolucoesListar/{cpf}")
     @CrossOrigin(origins = "http://127.0.0.1:5501/")
     public Page<Evolucao> listar(@PathVariable String cpf, Pageable pageable){
